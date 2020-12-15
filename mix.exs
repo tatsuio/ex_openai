@@ -6,6 +6,7 @@ defmodule ExOpenAI.MixProject do
       app: :ex_openai,
       version: "0.1.0",
       elixir: "~> 1.11",
+      preferred_cli_env: preferred_cli_env(),
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -22,7 +23,17 @@ defmodule ExOpenAI.MixProject do
   defp deps do
     [
       {:httpoison, "~> 1.7"},
-      {:jason, "~> 1.2"}
+      {:jason, "~> 1.2"},
+      {:exvcr, "~> 0.11", only: :test}
+    ]
+  end
+
+  defp preferred_cli_env do
+    [
+      vcr: :test,
+      "vcr.delete": :test,
+      "vcr.check": :test,
+      "vcr.show": :test
     ]
   end
 end
