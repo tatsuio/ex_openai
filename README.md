@@ -51,7 +51,7 @@ This is the main endpoint for the OpenAI API. It returns the predicted completio
 The OpenAI documentation for this endpoint: https://beta.openai.com/docs/api-reference/create-completion
 
 ```
-ExOpenAI.Completion.create(engine_id: :davinci, prompt: "Once upon a time")
+ExOpenAI.Completion.create(:davinci, [prompt: "Once upon a time"])
 ```
 
 ## TESTING
@@ -61,6 +61,20 @@ You can run the tasks with the standard mix command:
 ```
 $ mix test
 ```
+
+The responses from the OpenAI API are recorded and cached using [ex_vcr](parroty/exvcr). If you need to re-record or add a response, you can safely use your own API key as those are filtered out from the API response.
+
+In order to use your own API key to re-record responses, you can add a secret using `config/test.secret.exs` with the following:
+
+```
+# config/test.secret.exs
+
+use Mix.Config
+
+config :ex_openai, valid_api_key: "sk-yourkeygoeshere"
+```
+
+The config file is imported and read only if it exists and it is not commited to source control.
 
 ## CONTRIBUTING
 

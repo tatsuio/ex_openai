@@ -1,0 +1,32 @@
+[
+  {
+    "request": {
+      "body": "{}",
+      "headers": {
+        "Content-Type": "application/json",
+        "User-agent": "ex_openai",
+        "Authorization": "***"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "https://api.openai.com/v1/engines/davinci/completions"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\n    \"error\": {\n        \"message\": \"You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accesing the API from your browser and are prompted for a username and password. You can obtain an API key from https://beta.openai.com. Feel free to email support@openai.com if you have any questions.\",\n        \"type\": \"invalid_request_error\",\n        \"param\": null,\n        \"code\": null\n    }\n}\n",
+      "headers": {
+        "Server": "nginx/1.17.10",
+        "Date": "Tue, 15 Dec 2020 13:44:09 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "539",
+        "Connection": "keep-alive",
+        "Vary": "Origin",
+        "X-Request-Id": "5cb9137eca803492dc94dfec0a840e3a",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains"
+      },
+      "status_code": 401,
+      "type": "ok"
+    }
+  }
+]
