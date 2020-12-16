@@ -6,6 +6,7 @@ defmodule ExOpenAI.MixProject do
       app: :ex_openai,
       version: "0.1.0",
       elixir: "~> 1.11",
+      preferred_cli_env: preferred_cli_env(),
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -21,8 +22,18 @@ defmodule ExOpenAI.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:httpoison, "~> 1.7"},
+      {:jason, "~> 1.2"},
+      {:exvcr, "~> 0.11", only: :test}
+    ]
+  end
+
+  defp preferred_cli_env do
+    [
+      vcr: :test,
+      "vcr.delete": :test,
+      "vcr.check": :test,
+      "vcr.show": :test
     ]
   end
 end

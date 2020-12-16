@@ -1,0 +1,37 @@
+[
+  {
+    "request": {
+      "body": "{}",
+      "headers": {
+        "Content-Type": "application/json",
+        "User-agent": "ex_openai",
+        "Authorization": "***"
+      },
+      "method": "post",
+      "options": [],
+      "request_body": "",
+      "url": "https://api.openai.com/v1/engines/davinci/completions"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"id\": \"cmpl-k7p5ibFWujeMG0BqTBgS93Ko\", \"object\": \"text_completion\", \"created\": 1608040622, \"model\": \"davinci:2020-05-03\", \"choices\": [{\"text\": \"Jackson County Library 311 Hawthorne Ave. Bowling Green , KY 42101 270-\", \"index\": 0, \"logprobs\": null, \"finish_reason\": \"max_tokens\"}]}\n",
+      "headers": {
+        "Server": "nginx/1.17.10",
+        "Date": "Tue, 15 Dec 2020 13:57:03 GMT",
+        "Content-Type": "application/json",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "Vary": "Accept-Encoding",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-cache, must-revalidate",
+        "Openai-Organization": "***",
+        "Openai-Processing-Ms": "920",
+        "Openai-Version": "2020-10-01",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "X-Request-Id": "2ee96299a88816dc8de8e13924437f92"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]
