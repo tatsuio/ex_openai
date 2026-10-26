@@ -1,36 +1,49 @@
 defmodule ExOpenAI.CompletionTest do
-  use ExUnit.Case, async: true
-  use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
+  use ExUnit.Case, async: false
 
   alias ExOpenAI.Completion
 
-  setup_all do
-    HTTPoison.start()
+  setup do
+    bypass = Bypass.open()
+    Application.put_env(:ex_openai, :base_url, "http://localhost:#{bypass.port}/")
+    on_exit(fn -> Application.delete_env(:ex_openai, :base_url) end)
+
+    {:ok, bypass: bypass, engine_id: "davinci"}
   end
 
   describe "Completion.create/3" do
-    setup do
-      {:ok, engine_id: "davinci", valid_api_key: Application.get_env(:ex_openai, :valid_api_key)}
-    end
+    test "no api key returns an error", %{bypass: bypass, engine_id: engine_id} do
+      Bypass.expect_once(bypass, "POST", "/v1/engines/davinci/completions", fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(
+          401,
+          ~s({"error": {"message": "You didn't provide an API key. You need to provide your API key in an Authorization header."}})
+        )
+      end)
 
-    test "no api key returns an error", %{engine_id: engine_id} do
-      use_cassette "completions/create/errors/no_api_key" do
-        assert {:error, response} = Completion.create(engine_id)
+      assert {:error, response} = Completion.create(engine_id)
 
-        assert String.match?(
-                 get_in(response.body, ["error", "message"]),
-                 ~r/^You didn't provide an API key./
-               )
-      end
+      assert String.match?(
+               get_in(response.body, ["error", "message"]),
+               ~r/^You didn't provide an API key./
+             )
     end
 
     test "returns a successful response with a valid API key", %{
-      valid_api_key: api_key,
+      bypass: bypass,
       engine_id: engine_id
     } do
-      use_cassette "completions/create/successful/no_parameters" do
-        assert {:ok, _response} = Completion.create(engine_id, [], api_key: api_key)
-      end
+      Bypass.expect_once(bypass, "POST", "/v1/engines/davinci/completions", fn conn ->
+        assert Plug.Conn.get_req_header(conn, "authorization") == ["Bearer sk-test"]
+
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, ~s({"id": "cmpl-1", "choices": [{"text": "Hello"}]}))
+      end)
+
+      assert {:ok, response} = Completion.create(engine_id, [], api_key: "sk-test")
+      assert response.body["id"] == "cmpl-1"
     end
   end
 end

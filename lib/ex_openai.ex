@@ -95,7 +95,10 @@ defmodule ExOpenAI do
   end
 
   defp base_url do
-    URI.merge(@base_url, @version) |> to_string()
+    :ex_openai
+    |> Application.get_env(:base_url, @base_url)
+    |> URI.merge(@version)
+    |> to_string()
   end
 
   defp body(parameters) do
